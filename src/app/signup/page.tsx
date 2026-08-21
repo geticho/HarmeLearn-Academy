@@ -163,7 +163,7 @@ export default function SignUpPage() {
               value={form.email}
               onChange={(e) => update("email", e.target.value)}
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="you@example.com"
+              placeholder="your email"
             />
           </label>
 
@@ -209,7 +209,7 @@ export default function SignUpPage() {
               <PasswordInput
                 value={form.password}
                 onChange={(value) => update("password", value)}
-                placeholder="••••••••"
+                placeholder="password"
                 autoComplete="new-password"
               />
             </label>
@@ -220,7 +220,7 @@ export default function SignUpPage() {
               <PasswordInput
                 value={form.confirmPassword}
                 onChange={(value) => update("confirmPassword", value)}
-                placeholder="••••••••"
+                placeholder="password"
                 autoComplete="new-password"
               />
             </label>

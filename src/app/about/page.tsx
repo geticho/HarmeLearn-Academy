@@ -114,17 +114,17 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-3 gap-10">
             {[
               {
-                name: "Abebe Kebede",
+                name: "Gati Daba",
                 role: "Founder & CEO",
-                bio: "Educational technology entrepreneur with 10+ years in edtech",
+                bio: "software engineering  ",
               },
               {
-                name: "Almaz Teshome",
+                name: "iyasu Diba and Bonsa Habtamu ",
                 role: "Chief Academic Officer",
                 bio: "Former Ministry of Education official, education reform advocate",
               },
               {
-                name: "Dawit Habte",
+                name: "Guduru Alemayehu",
                 role: "CTO",
                 bio: "AI/ML expert, built educational platforms for thousands of students",
               },
@@ -166,7 +166,7 @@ export default function AboutPage() {
         <div className="container mx-auto px-6 sm:px-8 text-center">
           <h2 className="text-4xl font-bold text-slate-900 mb-8">Join the HarmeLearn Community</h2>
           <p className="text-lg text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Whether you're a student ready to master your grades or a teacher eager to inspire the next generation,
+            Whether you are a student ready to master your grades or a teacher eager to inspire the next generation,
             HarmeLearn is here to support your educational journey.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

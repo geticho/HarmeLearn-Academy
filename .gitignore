@@ -39,3 +39,6 @@ coverage/
 *.pem
 .vercel
 HarmeLearn-Academy-full.zip
+
+.vercel
+.env*

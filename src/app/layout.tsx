@@ -5,7 +5,12 @@ import OfflineIndicator from "@/components/OfflineIndicator";
 import OfflineSync from "@/components/OfflineSync";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import StoredDataCleanup from "@/components/StoredDataCleanup";
+import { Poppins } from "next/font/google";
 
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
 const APP_URL =
   process.env.NEXT_PUBLIC_APP_URL ||
   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined) ||
@@ -123,10 +128,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
+      
         <link rel="icon" href="/icons/icon-512.png" type="image/png" sizes="any" />
         <link rel="shortcut icon" href="/icons/icon-512.png" type="image/png" />
         <link rel="apple-touch-icon" href="/icons/icon-512.png" sizes="180x180" />
@@ -139,7 +141,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body className="font-poppins bg-white text-slate-900 antialiased">
+      <body className={poppins.className}>
         {children}
         <ServiceWorkerRegister />
         <StoredDataCleanup />

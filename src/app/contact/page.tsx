@@ -75,19 +75,19 @@ export default function ContactPage() {
               {
                 icon: "📧",
                 title: "Email",
-                contact: "support@harmelearn.com",
+                contact: "getidaba3@gmail.com",
                 description: "Send us an email anytime",
               },
               {
                 icon: "📱",
                 title: "Phone",
-                contact: "+251 (0) 123-456-7890",
+                contact: "+251 944981515",
                 description: "Call us during business hours",
               },
               {
                 icon: "📍",
                 title: "Address",
-                contact: "Addis Ababa, Ethiopia",
+                contact: "Finfinne, Ethiopia",
                 description: "Visit our office",
               },
             ].map((item, idx) => (
@@ -121,7 +121,7 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Abebe Kebede"
+                    placeholder="your name"
                   />
                 </div>
                 <div>
@@ -133,7 +133,7 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="abebe@example.com"
+                    placeholder="your email"
                   />
                 </div>
               </div>
