@@ -13,7 +13,7 @@ export default function HomePage() {
       <nav className="sticky top-0 z-50 bg-[rgba(4,20,18,0.72)] backdrop-blur-md border-b border-emerald-400/20">
         <div className="container mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <BrandLogo size={44} />
+            <BrandLogo size={56} />
             <span className="font-bold text-xl text-emerald-50">HarmeLearn</span>
           </div>
 
