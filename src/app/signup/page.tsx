@@ -136,7 +136,7 @@ export default function SignUpPage() {
                 value={form.firstName}
                 onChange={(e) => update("firstName", e.target.value)}
                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Abebe"
+                placeholder=""
               />
             </label>
             <label className="block">
@@ -148,7 +148,7 @@ export default function SignUpPage() {
                 value={form.lastName}
                 onChange={(e) => update("lastName", e.target.value)}
                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Kebede"
+                placeholder=""
               />
             </label>
           </div>
