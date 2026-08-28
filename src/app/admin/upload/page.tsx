@@ -17,6 +17,7 @@ export default function AdminUploadPage() {
   const { catalog, loading: catalogLoading, reload } = useCatalog();
   const [tab, setTab] = useState<Tab>("video");
   const [saving, setSaving] = useState(false);
+  const [uploadingPdf, setUploadingPdf] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
@@ -238,7 +239,25 @@ export default function AdminUploadPage() {
       setSaving(false);
     }
   }
-
+async function handlePdfFileUpload(file: File) {
+  setError("");
+  setUploadingPdf(true);
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch("/api/admin/upload-file", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Upload failed");
+    setPdfForm((prev) => ({ ...prev, fileUrl: data.url }));
+  } catch (err) {
+    setError(err instanceof Error ? err.message : "Upload failed");
+  } finally {
+    setUploadingPdf(false);
+  }
+}
   async function submitPdf(e: FormEvent) {
     e.preventDefault();
     if (!lessonId) return setError("Pick a chapter/lesson first (cascade above).");
@@ -547,8 +566,21 @@ export default function AdminUploadPage() {
           <F label="Pages">
             <input type="number" min="1" value={pdfForm.pages} onChange={(e) => setPdfForm({ ...pdfForm, pages: e.target.value })} className="input" />
           </F>
+        <F label="Upload from your computer" full>
+            <input
+              type="file"
+              accept="application/pdf"
+              disabled={uploadingPdf}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handlePdfFileUpload(file);
+              }}
+              className="input"
+            />
+            {uploadingPdf && <p className="text-sm text-blue-600 mt-1">Uploading…</p>}
+          </F>
           <F label="File URL *" full>
-            <input required type="url" value={pdfForm.fileUrl} onChange={(e) => setPdfForm({ ...pdfForm, fileUrl: e.target.value })} className="input" placeholder="https://…" />
+            <input required type="url" value={pdfForm.fileUrl} onChange={(e) => setPdfForm({ ...pdfForm, fileUrl: e.target.value })} className="input" placeholder="https://… (auto-filled after upload)" />
           </F>
           <F label="Description" full>
             <textarea rows={2} value={pdfForm.description} onChange={(e) => setPdfForm({ ...pdfForm, description: e.target.value })} className="input" />
