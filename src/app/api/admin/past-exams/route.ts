@@ -54,19 +54,19 @@ export async function POST(request: NextRequest) {
       ? body.grade
       : null;
 
-    if (!title || !fileUrl || !subjectId || !grade) {
-      return NextResponse.json(
-        { error: "Subject, grade, title and file URL are required" },
-        { status: 400 }
-      );
-    }
+  if (!title || !subjectId || !grade) {
+  return NextResponse.json(
+    { error: "Subject, grade and title are required" },
+    { status: 400 }
+  );
+}
 
-    if (!/^https?:\/\//i.test(fileUrl)) {
-      return NextResponse.json(
-        { error: "File URL must start with http:// or https://" },
-        { status: 400 }
-      );
-    }
+   if (fileUrl && !/^https?:\/\//i.test(fileUrl)) {
+  return NextResponse.json(
+    { error: "File URL must start with http:// or https://" },
+    { status: 400 }
+  );
+}
 
     const subject = await db
       .select({ id: subjects.id })

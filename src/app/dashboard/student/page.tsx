@@ -77,15 +77,38 @@ export default function StudentDashboard() {
   const [openTabs, setOpenTabs] = useState<Record<string, Tab>>({});
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  const load = useCallback(async () => {
-    const meRes = await fetch("/api/auth/me");
-    if (!meRes.ok) {
-      router.push("/login");
+ const load = useCallback(async () => {
+    let meRes: Response;
+    try {
+      meRes = await fetch("/api/auth/me");
+    } catch {
+      // Genuinely offline with no cached response at all (service worker
+      // itself unavailable, e.g. first-ever visit). Nothing we can show.
       return;
     }
-    const res = await fetch("/api/student/dashboard");
+
+    if (!meRes.ok) {
+      // 401/403 from a live server means truly logged out — but a 503 means
+      // the service worker had no cached "who am I" to fall back to while
+      // offline. Only force a real login redirect when we're online and the
+      // server genuinely rejected us.
+      if (navigator.onLine && meRes.status !== 503) {
+        router.push("/login");
+      }
+      return;
+    }
+
+    let res: Response;
+    try {
+      res = await fetch("/api/student/dashboard");
+    } catch {
+      return;
+    }
+
     if (!res.ok) {
-      router.push("/not-authorized");
+      if (navigator.onLine) {
+        router.push("/not-authorized");
+      }
       return;
     }
     setData(await res.json());

@@ -18,6 +18,10 @@ export default function AdminUploadPage() {
   const [tab, setTab] = useState<Tab>("video");
   const [saving, setSaving] = useState(false);
   const [uploadingPdf, setUploadingPdf] = useState(false);
+  const [uploadingCsv, setUploadingCsv] = useState(false);
+const [csvResult, setCsvResult] = useState<{ message: string; errors: { row: number; error: string }[] } | null>(null);
+const [uploadingQuizCsv, setUploadingQuizCsv] = useState(false);
+const [quizCsvResult, setQuizCsvResult] = useState<{ message: string; errors: { row: number; error: string }[] } | null>(null);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
@@ -127,6 +131,50 @@ export default function AdminUploadPage() {
       setSaving(false);
     }
   }
+  async function handleCsvUpload(file: File) {
+  if (!pastExamId) return;
+  setUploadingCsv(true);
+  setCsvResult(null);
+  setError("");
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("pastExamId", pastExamId);
+    const res = await fetch("/api/admin/past-exams/questions/bulk", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Bulk upload failed");
+    setCsvResult({ message: data.message, errors: data.errors || [] });
+  } catch (err) {
+    setError(err instanceof Error ? err.message : "Bulk upload failed");
+  } finally {
+    setUploadingCsv(false);
+  }
+}
+async function handleQuizCsvUpload(file: File) {
+  if (!quizId) return;
+  setUploadingQuizCsv(true);
+  setQuizCsvResult(null);
+  setError("");
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("quizId", quizId);
+    const res = await fetch("/api/admin/questions/bulk", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Bulk upload failed");
+    setQuizCsvResult({ message: data.message, errors: data.errors || [] });
+  } catch (err) {
+    setError(err instanceof Error ? err.message : "Bulk upload failed");
+  } finally {
+    setUploadingQuizCsv(false);
+  }
+}
 
   async function quickCreateLesson() {
     if (!unitId) {
@@ -611,6 +659,37 @@ async function handlePdfFileUpload(file: File) {
               </button>
             </div>
           </form>
+          {quizId && (
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 max-w-3xl mb-6">
+              <h3 className="font-bold text-slate-900 mb-2">Bulk upload questions from CSV</h3>
+              <p className="text-sm text-slate-600 mb-4">
+                Columns: questionText, questionType, option1, option2, option3, option4, correctAnswer, explanation
+              </p>
+              <input
+                type="file"
+                accept=".csv"
+                disabled={uploadingQuizCsv}
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleQuizCsvUpload(file);
+                }}
+                className="input"
+              />
+              {uploadingQuizCsv && <p className="text-sm text-blue-600 mt-2">Uploading…</p>}
+              {quizCsvResult && (
+                <div className="mt-3 text-sm">
+                  <p className="text-green-700 font-medium">{quizCsvResult.message}</p>
+                  {quizCsvResult.errors.length > 0 && (
+                    <ul className="text-red-600 mt-1 list-disc list-inside">
+                      {quizCsvResult.errors.map((e, i) => (
+                        <li key={i}>Row {e.row}: {e.error}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
 
           {quizId && <QuestionBuilder
             targetLabel="quiz"
@@ -647,6 +726,37 @@ async function handlePdfFileUpload(file: File) {
               </button>
             </div>
           </form>
+          {pastExamId && (
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 max-w-3xl mb-6">
+              <h3 className="font-bold text-slate-900 mb-2">Bulk upload questions from CSV</h3>
+              <p className="text-sm text-slate-600 mb-4">
+                Columns: questionText, questionType, option1, option2, option3, option4, correctAnswer, explanation
+              </p>
+              <input
+                type="file"
+                accept=".csv"
+                disabled={uploadingCsv}
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleCsvUpload(file);
+                }}
+                className="input"
+              />
+              {uploadingCsv && <p className="text-sm text-blue-600 mt-2">Uploading…</p>}
+              {csvResult && (
+                <div className="mt-3 text-sm">
+                  <p className="text-green-700 font-medium">{csvResult.message}</p>
+                  {csvResult.errors.length > 0 && (
+                    <ul className="text-red-600 mt-1 list-disc list-inside">
+                      {csvResult.errors.map((e, i) => (
+                        <li key={i}>Row {e.row}: {e.error}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
 
           {pastExamId && <QuestionBuilder
             targetLabel="past exam"

@@ -581,11 +581,11 @@ export default function QuizPage() {
                       key={opt}
                       type="button"
                       onClick={() => setAnswer(q.id, opt)}
-                      className={`px-6 py-4 rounded-xl border-2 font-bold text-sm transition ${
-                        value.toLowerCase() === opt.toLowerCase()
-                          ? "border-blue-600 bg-blue-50 text-blue-700"
-                          : "border-slate-200 text-slate-700 hover:border-slate-300"
-                      }`}
+                     className={`px-6 py-4 rounded-xl border-2 font-bold text-sm transition ${
+                          value.toLowerCase() === opt.toLowerCase()
+                              ? "border-blue-600 bg-blue-600 !text-white"
+                           : "border-slate-200 bg-white !text-slate-700 hover:border-slate-300"
+                        }`}
                     >
                       {opt}
                     </button>
