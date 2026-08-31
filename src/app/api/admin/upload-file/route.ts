@@ -40,12 +40,13 @@ export async function POST(request: NextRequest) {
     // "raw" resource_type handles PDFs and other non-image/video files.
     const isPdf = file.type === "application/pdf";
 
-    const result = await cloudinary.uploader.upload(base64, {
-      resource_type: isPdf ? "raw" : "auto",
-      folder: "harmelearn",
-      use_filename: true,
-      unique_filename: true,
-    });
+ const result = await cloudinary.uploader.upload(base64, {
+  resource_type: isPdf ? "image" : "auto",
+  folder: "harmelearn",
+  use_filename: true,
+  unique_filename: true,
+  format: isPdf ? "pdf" : undefined,
+});
 
     return NextResponse.json({
       url: result.secure_url,
